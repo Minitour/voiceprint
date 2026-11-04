@@ -1,0 +1,136 @@
+# voiceprint
+
+Let agents write like you.
+
+Telling an LLM to "write like me" is only a suggestion. voiceprint turns it into a
+measurement. It builds a small statistical language model from text you wrote. It
+learns which word you put after which, and how often you use each word compared
+with general English. Then it checks a draft an agent wrote, flags the words you
+would not have used, and offers replacements you *have* used, ranked in context.
+
+You choose the text it learns from: posts, docs, emails, notes, anything you wrote.
+What goes in is up to you, and the model only knows what you give it.
+
+## How it works
+
+```mermaid
+flowchart TB
+    S["Your writing<br/>any text you wrote"] --> B["voiceprint build<br/>clean, tokenize, fit"]
+    B --> I[("Your voice index<br/>n-gram model + style profile + calibration")]
+    D["Agent writes a draft"] --> K{"voiceprint check<br/>would you have written this?"}
+    I --> K
+    E["General English<br/>word frequencies"] --> K
+    K -->|"yes"| OK(["Done: sounds like you"])
+    K -->|"no: flags + replacements<br/>from your own vocabulary"| R["Agent revises"]
+    R -->|"re-check"| K
+```
+
+1. **Build** reads your files, cleans them, and fits a word-level n-gram model
+   (interpolated Kneser-Ney, default order 4). It cross-validates over your
+   documents, so "surprising" means surprising *compared with your own writing
+   that the model hasn't seen*, not compared with an absolute number.
+2. **Check** scores each word of a draft against that model and against general
+   English frequencies. It separates "you avoid this word" (flag it) from "this
+   is just a rare technical word" (leave it alone).
+3. **Suggestions** come from a curated plain-language map plus WordNet synonyms.
+   They're filtered to words *you* have actually used and ranked by how well
+   they fit the surrounding words under your model.
+4. **The loop:** an agent drafts, runs `check`, revises what's flagged, and checks
+   again until the draft passes. The bundled skill does this for you.
+
+### What gets flagged
+
+| Flag | Meaning |
+|---|---|
+| **marker / phrase** | A word or construction LLMs over-use (`data/llm_markers.txt`) that *you* rarely use. If you genuinely write "robust" a lot, it's left alone. |
+| **underused** | A common English word you use at under 1/5 of its general rate, where your corpus is big enough for that to be significant (Poisson test). |
+| **context** | A common word in your most surprising 5% of positions, where a synonym fits much better under your model. |
+| **style** | Sentence length, commas, em dashes, semicolons, parentheses, we/I, contractions or transition words outside your usual range. |
+
+## Install
+
+Run from the repo root:
+
+```bash
+uv tool install ".[wordnet]"
+```
+
+```bash
+uv run --with nltk python -m nltk.downloader wordnet
+```
+
+WordNet is optional. Without it, only the curated map supplies suggestions.
+
+## Use
+
+Build your index once, from any files or folders of your writing:
+
+```bash
+voiceprint build ~/writing -o ~/.voiceprint/voice.vpi
+```
+
+Check a draft:
+
+```bash
+voiceprint check draft.md
+```
+
+Other commands:
+
+```
+voiceprint check draft.md --json            # for agents
+voiceprint check draft.md --annotate        # inline [[word -> alt | alt]]
+voiceprint check draft.md --fail-on high    # exit 1 for hooks / CI
+voiceprint profile -o voice-card.md         # your style norms, signature words, words you never use
+voiceprint kwic "in particular"             # how you actually use a phrase
+voiceprint suggest --left "results are" --word crucial --right "for deployment"
+voiceprint complete "as a result we"        # autocomplete from your writing
+```
+
+Set `VOICEPRINT_INDEX` to skip `-i`.
+
+### Choosing what it learns from
+
+- **Only include text you wrote.** Quoted material, templates, and generated text
+  teach the model someone else's voice.
+- **Use a sources file** to pin exactly which files go in: one path per line (see
+  `sources.example.txt`), then run `voiceprint build @sources.txt`. Use
+  `--exclude GLOB` to skip drafts, and `--dump-clean DIR` to see what the cleaner kept.
+- **Build one index per register.** An index of formal writing will (correctly)
+  flag "hi", "thanks" and "you" in a casual email, so build separate ones and
+  switch with `-i`.
+- **Keep personal sources files in `local/`,** which is gitignored.
+
+## Agent skill
+
+`skill/write-like-me/SKILL.md` has an agent read your voice card, draft to a file,
+run `check`, revise flag by flag, and re-check until there are no high-severity
+flags. For Claude Code, copy it to `~/.claude/skills/write-like-me/`.
+
+## Validation
+
+Git's release notes stood in for an author: 318 notes, 260k words, mostly written by
+one maintainer. v2.51 to v2.54 were held out:
+
+| Text | flags /100 words | high | verdict |
+|---|---|---|---|
+| 6 real held-out release notes | 1.2 to 4.5 | 0 to 1 | close / drifting |
+| LLM-style rewrite of v2.54 | 12.3 | 15 | does not sound like you |
+
+`tests/fixtures/` has the rewrite. Run `pytest` for the unit tests.
+
+## Limits
+
+- **It doesn't detect or remove watermarks.** Some providers embed statistical
+  watermarks in generated text. voiceprint measures *style*, meaning words you
+  wouldn't use. It doesn't target, detect, or verify watermarks, and its edits
+  shouldn't be relied on to remove one.
+- **It knows co-occurrence, not meaning.** Suggestions need judgment; the skill
+  makes the agent supply it.
+- **It needs enough text.** Below ~30k words the model is thin; 100k+ is comfortable.
+- **New topics bring new vocabulary.** "underused" flags on technical terms should
+  be kept, not "fixed".
+- **PDF extraction is lossy.** voiceprint drops table-of-contents lines, splits
+  glued words, and repairs dropped fi/fl ligatures, but source formats like
+  Markdown or LaTeX are cleaner. Check with `--dump-clean`.
+- **Only load indexes you built yourself.** The index is a pickle.

@@ -1,0 +1,97 @@
+# Plain-language alternatives for LLM-marker words: "word: alt, alt, ...".
+# Candidates are only ever suggested if they occur in YOUR corpus, and they are
+# ranked by your model in context, so it's fine to list many. Use base forms;
+# voiceprint inflects them (utilize -> uses/used/using) to match the draft.
+
+delve: look, dig, examine, explore, study, investigate, go
+tapestry: mix, combination, range, set, collection
+testament: evidence, proof, sign, demonstration
+underscore: show, highlight, stress, emphasize, confirm, suggest
+pivotal: key, central, important, main, critical, essential
+intricate: complex, complicated, detailed, involved, elaborate
+intricacies: details, complexity, subtleties
+showcase: show, present, demonstrate, display, illustrate
+leverage: use, exploit, build, rely, apply
+leveraging: using, exploiting, building, relying
+realm: area, field, domain, space, context
+landscape: field, area, state, situation, space, literature
+seamless: smooth, easy, transparent, simple, direct
+seamlessly: smoothly, easily, transparently, directly, simply
+robust: reliable, solid, stable, strong, resilient, sound
+comprehensive: complete, full, thorough, extensive, broad, detailed, exhaustive
+crucial: important, key, critical, essential, necessary, central
+crucially: importantly, critically
+multifaceted: complex, varied, diverse
+nuanced: subtle, careful, detailed, fine-grained
+foster: encourage, support, promote, help, enable, build
+elevate: improve, raise, increase, lift
+embark: start, begin, set
+navigate: handle, manage, deal, work, move, go
+bolster: support, strengthen, reinforce, back
+garner: get, gain, attract, receive, collect, earn
+meticulous: careful, thorough, detailed, rigorous
+meticulously: carefully, thoroughly, rigorously, closely
+commendable: good, admirable, worthwhile
+noteworthy: notable, interesting, important, significant
+notably: especially, particularly, in particular
+paramount: essential, critical, most important, key
+vibrant: active, lively
+unwavering: steady, consistent, firm
+holistic: overall, complete, integrated, whole
+synergy: interplay, combination, cooperation
+harness: use, exploit, apply
+harnessing: using, exploiting, applying
+unlock: enable, allow, open, permit
+unleash: release, enable
+transformative: major, significant, fundamental
+groundbreaking: new, novel, original, pioneering
+cutting-edge: recent, modern, latest, state-of-the-art, advanced
+ever-evolving: changing, evolving
+endeavor: effort, attempt, work, project, task
+endeavour: effort, attempt, work, project, task
+facilitate: help, enable, allow, ease, support, simplify
+utilize: use, employ, apply
+myriad: many, numerous, countless, various
+plethora: many, lots, abundance, range
+profound: deep, significant, major, strong, large
+profoundly: deeply, greatly, strongly, significantly
+furthermore: also, further, besides, in addition
+moreover: also, further, besides, in addition
+additionally: also, further, besides, in addition
+importantly: notably, critically
+ultimately: eventually, finally, in the end
+invaluable: valuable, useful, essential, helpful
+insightful: useful, informative, helpful, illuminating
+interplay: interaction, relationship, relation
+resonate: match, fit, agree, connect
+streamline: simplify, speed, ease, improve, shorten
+boast: have, offer, include, feature
+captivating: interesting, engaging, compelling
+essentially: basically, mostly, effectively, roughly
+intriguing: interesting, curious, surprising
+poised: ready, set, likely, about
+remarkable: notable, striking, surprising, impressive, unusual
+remarkably: surprisingly, notably, unusually, strikingly
+strive: try, aim, attempt, work
+beacon: example, model, guide
+cornerstone: basis, foundation, core, key
+linchpin: key, core, basis
+spearhead: lead, start, drive, initiate
+illuminate: clarify, explain, show, reveal
+elucidate: explain, clarify, show
+commence: start, begin
+adept: good, skilled, able, capable
+akin: similar, like, comparable, analogous
+delineate: describe, define, outline, separate
+enhance: improve, increase, extend, strengthen, boost
+empower: enable, allow, help, let
+nuance: subtlety, detail, distinction
+valuable: useful, important, helpful, worthwhile
+powerful: strong, capable, effective, flexible, useful
+providing: giving, offering, supplying, with
+proactively: early, actively, now
+innovative: new, novel, original
+rigorously: carefully, thoroughly, systematically, formally
+unlocking: enabling, allowing, opening
+pathway: path, way, route, approach
+groundwork: basis, foundation

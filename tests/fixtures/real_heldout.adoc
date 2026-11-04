@@ -1,0 +1,73 @@
+Git v2.54 Release Notes
+=======================
+
+UI, Workflows & Features
+------------------------
+
+ * "git add -p" and friends note what the current status of the hunk
+   being shown is.
+
+ * "git history" history rewriting (experimental) command has been
+   added.
+
+ * "git replay" is taught to drop commits that become empty (not the
+   ones that are empty in the original).
+
+ * The help text and the documentation for the "--expire" option of
+   "git worktree [list|prune]" have been improved.
+
+ * When "git show-index" is run outside a repository, it silently
+   defaults to SHA-1; the tool now warns when this happens.
+
+ * "git merge-file" can be run outside a repository, but it ignored
+   all configuration, even the per-user ones.  The command now uses
+   available configuration files to find its customization.
+
+ * "auto filter" logic for large-object promisor remote.
+
+ * "git rev-list" and friends learn "--maximal-only" to show only the
+   commits that are not reachable by other commits.
+
+ * Command line completion (in contrib/) update for
+   "stash import/export".
+
+ * "git repo info" learns "--keys" action to list known keys.
+
+ * Extend the alias configuration syntax to allow aliases using
+   characters outside ASCII alphanumeric (plus '-').
+
+ * A signature on a commit that was GPG signed a long time ago ought to
+   be still valid after the key that was used to sign it has expired,
+   but we showed them in alarming red.
+
+ * "git subtree split --prefix=P <commit>" now checks the prefix P
+   against the tree of the (potentially quite different from the
+   current working tree) given commit.
+
+ * "git add -p" learned a new mode that allows the user to revisit a
+   file that was already dealt with.
+
+ * Allow the directory in which reference backends store their data to
+   be specified.
+
+ * "gitweb" has been taught to be mobile friendly.
+
+ * "git apply --directory=./un/../normalized/path" now normalizes the
+   given path before using it.
+
+ * "git maintenance" starts using the "geometric" strategy by default.
+
+ * "git config list" is taught to show the values interpreted for
+   specific type with "--type=<X>" option.
+
+ * "git add <submodule>" has been taught to honor
+   submodule.<name>.ignore that is set to "all" (and requires "git add
+   -f" to override it).
+
+ * Hook commands are now allowed to be defined (possibly centrally)
+   in the configuration files, and run multiple of them for the same
+   hook event.
+
+ * The way end-users can add their own "git <cmd>" subcommand by
+   storing "git-<cmd>" in a directory on their $PATH has not been
+   documented clearly

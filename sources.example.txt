@@ -1,0 +1,5 @@
+# One file or folder per line; each line is passed to `voiceprint build` as an argument.
+# List only text you wrote.
+~/writing/blog
+~/writing/notes/weekly-updates.md
+~/writing/reports/q3-review.docx

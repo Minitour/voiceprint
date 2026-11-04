@@ -1,0 +1,184 @@
+# Words and phrases that LLMs over-use relative to human writing.
+# One per line. Lines starting with "re:" are regular expressions (case-insensitive).
+# A marker is only flagged if YOUR corpus rarely uses it; if you genuinely write
+# "robust" a lot, voiceprint leaves it alone. Edit freely, or pass --markers FILE.
+#
+# Sources: antislop default lists (Paech et al. 2025), community "slop" lists,
+# and common complaints. This is a starting point, not ground truth.
+
+# --- single words ---------------------------------------------------------
+delve
+delves
+delving
+tapestry
+testament
+underscore
+underscores
+underscoring
+pivotal
+intricate
+intricacies
+showcase
+showcases
+showcasing
+leveraging
+realm
+landscape
+seamless
+seamlessly
+robust
+comprehensive
+crucial
+crucially
+multifaceted
+nuanced
+foster
+fosters
+fostering
+elevate
+elevates
+embark
+navigate
+navigating
+bolster
+bolsters
+garner
+meticulous
+meticulously
+commendable
+noteworthy
+notably
+paramount
+vibrant
+unwavering
+holistic
+synergy
+harness
+harnessing
+unlock
+unlocks
+unleash
+transformative
+groundbreaking
+cutting-edge
+ever-evolving
+game-changer
+endeavor
+endeavour
+facilitate
+facilitates
+utilize
+utilizes
+utilizing
+myriad
+plethora
+profound
+profoundly
+furthermore
+moreover
+additionally
+importantly
+ultimately
+invaluable
+insightful
+interplay
+resonate
+resonates
+streamline
+streamlines
+boasts
+captivating
+essentially
+intriguing
+poised
+remarkable
+remarkably
+strive
+beacon
+cornerstone
+linchpin
+spearhead
+spearheading
+illuminate
+illuminates
+elucidate
+commence
+bustling
+adept
+nestled
+akin
+delineate
+enhance
+enhances
+enhancing
+empower
+empowers
+empowering
+nuance
+crucible
+paradigm-shifting
+ever-changing
+innovative
+rigorously
+unlocking
+pathway
+reimagine
+reimagining
+
+# --- phrases --------------------------------------------------------------
+it's worth noting
+it is worth noting
+worth noting that
+it is important to note
+it's important to note
+it should be noted
+in today's
+in the realm of
+plays a crucial role
+plays a pivotal role
+plays a vital role
+play a crucial role
+a testament to
+navigate the complexities
+shed light on
+sheds light on
+pave the way
+paves the way
+at the forefront
+a deep dive
+dive into
+delve into
+rich tapestry
+in conclusion
+in summary
+a myriad of
+a plethora of
+when it comes to
+at its core
+unlock the potential
+harness the power
+valuable insights
+key takeaways
+embark on a journey
+in an era of
+first and foremost
+underscores the importance
+highlights the importance
+stands as a
+serves as a testament
+a nuanced understanding
+the intricate interplay
+re:\bnot only\b[^.;]{1,80}\bbut also\b
+re:\bit'?s not (?:just|only|merely|about) [^.;]{1,60}[,;—–-]+ ?(?:it'?s|but)\b
+re:\bnot (?:just|merely) [^.;]{1,40}, but\b
+re:\bwhether you'?re\b
+bridge the gap
+bridge this gap
+bridging the gap
+lays the groundwork
+lay the groundwork
+laying the groundwork
+a new era
+paving the way
+opens new avenues
+opens up new avenues
