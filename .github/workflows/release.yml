@@ -2,6 +2,10 @@ name: Release
 
 # Push a tag like v0.1.0 to build every platform and publish to npm.
 # Run it manually (Actions > Release > Run workflow) to build without publishing.
+#
+# Publishing uses npm trusted publishing (GitHub OIDC), so there is no npm token.
+# Every package (voiceprint and each @voiceprint/<platform>) must list this repo and
+# this workflow file (release.yml) as its trusted publisher on npmjs.com.
 on:
   push:
     tags: ["v*"]
@@ -11,6 +15,9 @@ on:
         description: Publish to npm
         type: boolean
         default: false
+
+permissions:
+  contents: read
 
 jobs:
   build:
@@ -60,12 +67,17 @@ jobs:
     needs: build
     if: startsWith(github.ref, 'refs/tags/v') || inputs.publish
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write # npm trusted publishing (OIDC)
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 24
           registry-url: https://registry.npmjs.org
+      - name: Use an npm that supports trusted publishing (>= 11.5.1)
+        run: npm install -g npm@latest && npm --version
       - uses: actions/download-artifact@v4
         with:
           path: artifacts
@@ -80,11 +92,4 @@ jobs:
           count=$(ls -d npm-dist/*/ | wc -l)
           [ "$count" -eq 7 ] || { echo "expected 6 platform packages + launcher, got $count"; exit 1; }
       - name: Publish platform packages, then the launcher
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: |
-          for dir in npm-dist/*/; do
-            [ "$dir" = "npm-dist/voiceprint/" ] && continue
-            npm publish "$dir" --access public
-          done
-          npm publish npm-dist/voiceprint --access public
+        run: node npm/publish.mjs npm-dist

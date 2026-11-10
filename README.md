@@ -148,7 +148,9 @@ one maintainer. v2.51 to v2.54 were held out:
 
 Releases: bump `version` in `Cargo.toml`, then push a `v<version>` tag. The Release
 workflow builds all six binaries and publishes `@voiceprint/<platform>` plus `voiceprint`
-to npm (it needs an `NPM_TOKEN` repository secret).
+to npm through trusted publishing (GitHub OIDC), so no npm token is stored anywhere.
+Every package lists `release.yml` in this repo as its trusted publisher; `npm/trust.mjs`
+sets that up.
 
 ## Limits
 
