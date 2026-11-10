@@ -5,9 +5,10 @@
 // Versions already on the registry are skipped, so a half-finished release can be
 // re-run. In GitHub Actions this authenticates through trusted publishing (OIDC);
 // locally it uses your `npm login` session.
-import { execFileSync } from "node:child_process";
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
+
+import { run as exec } from "./run.mjs";
 
 const dir = process.argv[2];
 const dryRun = process.argv.includes("--dry-run");
@@ -16,8 +17,7 @@ if (!dir) {
   process.exit(2);
 }
 
-const npm = process.platform === "win32" ? "npm.cmd" : "npm";
-const run = (args, opts = {}) => execFileSync(npm, args, { encoding: "utf8", shell: process.platform === "win32", ...opts });
+const run = (args, opts) => exec("npm", args, opts);
 
 const pkgs = readdirSync(dir, { withFileTypes: true })
   .filter((d) => d.isDirectory())
@@ -38,7 +38,12 @@ for (const p of pkgs) {
     continue;
   }
   console.log(`publish ${p.name}@${p.version}`);
-  // Publish from inside the package folder: passing its path as an argument breaks on
-  // Windows when the path contains spaces (npm.cmd runs through cmd.exe).
-  run(["publish", "--access", "public", ...(dryRun ? ["--dry-run"] : [])], { stdio: "inherit", cwd: p.path });
+  try {
+    run(["publish", "--access", "public", ...(dryRun ? ["--dry-run"] : [])], { stdio: "inherit", cwd: p.path });
+  } catch {
+    console.error(`
+Publishing ${p.name} failed (see npm's message above). Fix it and run this again;`);
+    console.error("packages that already went out will be skipped.");
+    process.exit(1);
+  }
 }
