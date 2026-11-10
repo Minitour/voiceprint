@@ -1,6 +1,6 @@
 [package]
 name = "voiceprint"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 description = "Let agents write like you: a personal n-gram model that flags words in a draft you wouldn't have written"
 license = "MIT"
