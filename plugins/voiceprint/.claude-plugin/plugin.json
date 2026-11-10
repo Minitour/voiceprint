@@ -1,0 +1,11 @@
+{
+  "name": "voiceprint",
+  "version": "0.1.1",
+  "description": "Let agents write like you: check drafts against a statistical model of your own writing and revise what doesn't sound like you.",
+  "author": {
+    "name": "Minitour"
+  },
+  "homepage": "https://github.com/Minitour/voiceprint",
+  "repository": "https://github.com/Minitour/voiceprint",
+  "license": "MIT"
+}

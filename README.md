@@ -117,22 +117,60 @@ Set `VOICEPRINT_INDEX` to skip `-i`.
   switch with `-i`.
 - **Keep personal sources files in `local/`,** which is gitignored.
 
-## Agent skill
+## Agent plugin
 
-`skill/write-like-me/SKILL.md` has an agent read your voice card, draft to a file,
-run `check`, revise flag by flag, and re-check until there are no high-severity
-flags. It calls the `voiceprint` CLI, falling back to `npx voiceprint` if it isn't installed.
+The `write-like-me` skill has an agent read your voice card, draft to a file, run
+`check`, revise flag by flag, and re-check until there are no high-severity flags. It
+calls the `voiceprint` CLI, falling back to `npx voiceprint` if it isn't installed.
 
-With [capa](https://github.com/infragate/capa), add it to your project's `capabilities.yaml`
-and install it in one step:
+It ships as a portable plugin in [`plugins/voiceprint/`](plugins/voiceprint/README.md)
+(Agent Plugins 1.0), with marketplace files for Claude Code, Cursor and Codex. Install it
+through your agent's plugin manager; no clone needed.
+
+<details>
+<summary><strong>Claude Code</strong></summary>
+
+```text
+/plugin marketplace add Minitour/voiceprint
+/plugin install voiceprint@voiceprint
+```
+
+The skill appears as `/voiceprint:write-like-me`. Reload with `/reload-plugins` after updates.
+</details>
+
+<details>
+<summary><strong>Cursor</strong></summary>
+
+In Agent chat:
+
+```text
+/add-plugin https://github.com/Minitour/voiceprint
+```
+
+Then install **voiceprint** from the imported marketplace. See [Cursor plugins](https://cursor.com/docs/plugins).
+</details>
+
+<details>
+<summary><strong>Codex</strong></summary>
+
+```bash
+codex plugin marketplace add Minitour/voiceprint
+```
+
+Then install **voiceprint** from the Plugin Directory. See [Codex plugin packaging](https://developers.openai.com/plugins/build/plugins).
+</details>
+
+<details>
+<summary><strong>CAPA</strong></summary>
 
 ```bash
 capa add Minitour/voiceprint@write-like-me --install
 ```
 
 Append a tag to pin a release, e.g. `Minitour/voiceprint@write-like-me:v0.1.1`.
+</details>
 
-Without capa, copy `skill/write-like-me/` to `~/.claude/skills/write-like-me/` for Claude Code.
+Any of these needs an index first: `npx voiceprint build <your writing> -o ~/.voiceprint/voice.vpi`.
 
 ## Validation
 
@@ -154,10 +192,11 @@ one maintainer. v2.51 to v2.54 were held out:
 | `data/` | Bundled data: word frequencies, synonyms, LLM-marker list. Licenses in `data/NOTICE.md` |
 | `npm/` | The npm launcher and the script that assembles per-platform packages |
 | `python/` | The original Python implementation. Unpublished; it regenerates `data/` and serves as the parity reference |
-| `skill/` | The `write-like-me` agent skill |
+| `plugins/voiceprint/` | The agent plugin: the `write-like-me` skill plus Claude Code, Codex and Cursor manifests |
+| `.claude-plugin/`, `.cursor-plugin/`, `.agents/plugins/` | Marketplace files that point each client at `plugins/voiceprint` |
 | `docs/` | Diagrams and their generator |
 
-Releases: bump `version` in `Cargo.toml`, then push a `v<version>` tag. The Release
+Releases: bump `version` in `Cargo.toml` and the plugin manifests (CI checks they match), then push a `v<version>` tag. The Release
 workflow builds all six binaries and publishes `@voiceprint/<platform>` plus `voiceprint`
 to npm through trusted publishing (GitHub OIDC), so no npm token is stored anywhere.
 Every package lists `release.yml` in this repo as its trusted publisher; `npm/trust.mjs`

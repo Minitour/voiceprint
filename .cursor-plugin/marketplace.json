@@ -1,0 +1,13 @@
+{
+  "name": "voiceprint",
+  "owner": {
+    "name": "Minitour"
+  },
+  "plugins": [
+    {
+      "name": "voiceprint",
+      "source": "./plugins/voiceprint",
+      "description": "Let agents write like you: check drafts against a statistical model of your own writing and revise what doesn't sound like you."
+    }
+  ]
+}

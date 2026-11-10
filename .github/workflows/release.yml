@@ -86,6 +86,8 @@ jobs:
         run: |
           version=$(grep -m1 '^version' Cargo.toml | cut -d'"' -f2)
           [ "v$version" = "${GITHUB_REF_NAME}" ] || { echo "tag ${GITHUB_REF_NAME} != Cargo.toml $version"; exit 1; }
+      - name: Plugin and marketplace versions match Cargo.toml
+        run: node .github/scripts/check-versions.mjs
       - name: Assemble packages
         run: |
           node npm/assemble.mjs artifacts npm-dist
