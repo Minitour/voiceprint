@@ -121,7 +121,18 @@ Set `VOICEPRINT_INDEX` to skip `-i`.
 
 `skill/write-like-me/SKILL.md` has an agent read your voice card, draft to a file,
 run `check`, revise flag by flag, and re-check until there are no high-severity
-flags. For Claude Code, copy it to `~/.claude/skills/write-like-me/`.
+flags. It calls the `voiceprint` CLI, falling back to `npx voiceprint` if it isn't installed.
+
+With [capa](https://github.com/infragate/capa), add it to your project's `capabilities.yaml`
+and install it in one step:
+
+```bash
+capa add Minitour/voiceprint@write-like-me --install
+```
+
+Append a tag to pin a release, e.g. `Minitour/voiceprint@write-like-me:v0.1.1`.
+
+Without capa, copy `skill/write-like-me/` to `~/.claude/skills/write-like-me/` for Claude Code.
 
 ## Validation
 
