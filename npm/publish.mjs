@@ -38,5 +38,7 @@ for (const p of pkgs) {
     continue;
   }
   console.log(`publish ${p.name}@${p.version}`);
-  run(["publish", p.path, "--access", "public", ...(dryRun ? ["--dry-run"] : [])], { stdio: "inherit" });
+  // Publish from inside the package folder: passing its path as an argument breaks on
+  // Windows when the path contains spaces (npm.cmd runs through cmd.exe).
+  run(["publish", "--access", "public", ...(dryRun ? ["--dry-run"] : [])], { stdio: "inherit", cwd: p.path });
 }
