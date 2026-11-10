@@ -36,7 +36,7 @@ from .model import VoiceModel
 from .alternatives import synonyms
 from .text import BOS, EOS, PLACEHOLDERS, is_word, mask_markup, sentences, tokenize
 
-DATA = Path(__file__).parent / "data"
+DATA = Path(__file__).resolve().parents[3] / "data"  # repo-root data/, shared with the Rust crate
 
 # Discourse fillers for which "just delete it" is a legitimate suggestion.
 DELETABLE = {

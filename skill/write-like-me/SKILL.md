@@ -17,7 +17,8 @@ Don't build one from text that the user didn't write.
 ## How to call it
 
 When the project is managed by capa (it has a `capabilities.yaml` with a `voiceprint` tool
-group), use `capa sh`. Otherwise, use the `voiceprint` CLI directly.
+group), use `capa sh`. Otherwise, use the `voiceprint` CLI directly. If it isn't installed,
+`npx voiceprint <command>` runs it without installing (or `npm install -g voiceprint`).
 
 | Step | capa | CLI |
 |---|---|---|

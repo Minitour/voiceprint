@@ -10,7 +10,7 @@ from __future__ import annotations
 from functools import lru_cache
 from pathlib import Path
 
-DATA = Path(__file__).parent / "data"
+DATA = Path(__file__).resolve().parents[3] / "data"  # repo-root data/, shared with the Rust crate
 SUFFIXES = ("ally", "ing", "ies", "ied", "ed", "es", "ly", "s")
 
 

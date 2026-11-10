@@ -4,3 +4,4 @@ __pycache__/
 *.vpi
 .pytest_cache/
 local/
+/target/

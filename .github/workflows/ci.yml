@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-14, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+      - run: cargo test --release
+      - name: Smoke test the CLI
+        shell: bash
+        run: |
+          mkdir -p smoke
+          for i in 1 2 3; do
+            printf 'We ship small fixes often. Each fix gets a short note. We keep notes plain and short.\n%.0s' {1..40} > smoke/note$i.md
+          done
+          cargo run --release -q -- build smoke -o smoke/voice.vpi
+          echo "Furthermore, we seamlessly leverage robust synergy." > smoke/draft.md
+          cargo run --release -q -- check smoke/draft.md -i smoke/voice.vpi --json > smoke/report.json
+          grep -q '"verdict"' smoke/report.json
+          if cargo run --release -q -- check smoke/draft.md -i smoke/voice.vpi --fail-on high; then
+            echo "expected --fail-on high to fail" && exit 1
+          fi
